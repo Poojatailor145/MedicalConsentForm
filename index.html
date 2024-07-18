@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Medical Consent Form</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+</head>
+<body>
+    <form action="/submit_consent" method="post">
+        
+        <div class="form-section">
+            <div class="form-header">
+                <p>Blood Draw Authorization and Consent</p>
+            </div>
+            <p>The purpose of this blood draw is to collect a sample of your blood for analysis as part of our research study. This sample will help us understand various health markers and contribute to our overall findings.</p>
+            <p><b>Preparation for the Blood Draw</b></p>
+            <ol>
+                <li>Hydration: It is recommended that you drink plenty of water before the blood draw to make the process easier.</li>
+                <li>Fasting: If you have been instructed to fast before the blood draw, please avoid eating or drinking anything except water for 8-12 hours prior to the procedure.</li>
+                <li>Clothing: Wear loose-fitting clothing or a shirt with sleeves that can be easily rolled up.</li>
+            </ol>
+
+            <p><b>During the Blood Draw</b></p>
+            <ol>
+                <li>Verification: Upon arrival, your identity and consent will be verified. The healthcare professional will confirm your name and details.</li>
+                <li>Seating: You will be seated comfortably, usually in a chair with armrests.</li>
+                <li>Tourniquet Application: A tourniquet (a tight band) will be placed around your upper arm to fill the veins with blood and make them more visible.</li>
+                <li>Cleansing: The area where the needle will be inserted (usually the inside of your elbow) will be cleaned with an antiseptic wipe to prevent infection.</li>
+                <li>Needle Insertion: A sterile needle will be inserted into your vein. You may feel a quick, sharp sensation.</li>
+                <li>Blood Collection: Blood will be drawn into one or more vials. The amount of blood taken will depend on the requirements of the study but will typically be a small amount.</li>
+                <li>Tourniquet Removal: The tourniquet will be removed once the blood collection is complete.</li>
+                <li>Needle Removal and Bandaging: The needle will be removed, and a piece of cotton or gauze will be applied to the puncture site. Pressure will be applied to help stop the bleeding, and the site will be covered with a bandage.</li>
+            </ol>
+
+            <p><b>After the Blood Draw</b></p>
+            <ol>
+                <li>Aftercare: Keep the bandage on for at least 30 minutes. Avoid heavy lifting or strenuous activity with the arm used for the blood draw for a few hours.</li>
+                <li>Hydration and Nutrition: Drink plenty of fluids and have a small snack if you were fasting before the procedure.</li>
+                <li>Possible Side Effects: You might experience slight bruising, lightheadedness, or minor discomfort at the puncture site. These are generally temporary and should resolve within a few hours.</li>
+            </ol>
+
+            <p><b>Risks and Discomforts</b></p>
+            <ol>
+                <li>Bruising: Mild bruising at the puncture site is common.</li>
+                <li>Discomfort: You might feel a quick pinch or stinging when the needle is inserted and removed.</li>
+                <li>Fainting: Some individuals may feel lightheaded or faint. Inform the healthcare provider if you have a history of fainting during blood draws.</li>
+                <li>Infection: Although rare, there is a slight risk of infection at the puncture site. Keeping the area clean and covered can help prevent this.</li>
+            </ol>
+
+            <p><b>Benefits</b></p>
+            <p>Participating in this blood draw helps advance medical research and can provide valuable information about your health and the health of others.</p>
+
+            <div class="form-section">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clinician_name">Clinician Name:</label>
+                        <input type="text" id="clinician_name" name="clinician_name" value="Dr. Emily Brown" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="clinician_designation">Clinician Designation:</label>
+                        <input type="text" id="clinician_designation" name="clinician_designation" value="General Physician" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="clinician_signature">Clinician Signature:</label>
+                        <input type="text" id="clinician_signature" name="clinician_signature" class="input-with-image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="interpreter_signature">Patient Name:</label>
+                    <input type="text" id="interpreter_signature" name="interpreter_signature">
+                </div>
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="patient_signature">Patient Signature:</label>
+                    <canvas id="patient_signature_pad" width="300" height="150" class="signature-pad" required></canvas>
+                    <button type="button" id="clear_patient_signature">Clear</button>
+                    <input type="hidden" id="patient_signature" name="patient_signature">
+                </div>
+            </div>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var patientSignaturePad = new SignaturePad(document.getElementById('patient_signature_pad'));
+
+            document.getElementById('clear_patient_signature').addEventListener('click', function () {
+                patientSignaturePad.clear();
+            });
+
+            document.querySelector('form').addEventListener('submit', function (event) {
+                if (patientSignaturePad.isEmpty()) {
+                    alert("Patient signature is required.");
+                    event.preventDefault();
+                } else {
+                    document.getElementById('patient_signature').value = patientSignaturePad.toDataURL();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
